@@ -1,0 +1,395 @@
+.clients-container {
+  width: 100%;
+  max-width: 1200px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.clients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.clients-header h1 {
+  margin: 0;
+  color: #333;
+  font-size: 2rem;
+}
+
+.clients-count {
+  margin: 0;
+  color: #666;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.add-client-button {
+  padding: 0.5rem 1.25rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-client-button:hover {
+  background-color: #218838;
+}
+
+/* Search Container */
+.search-container {
+  margin-bottom: 1.5rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.search-input::placeholder {
+  color: #adb5bd;
+}
+
+.clients-table-wrapper {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.clients-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #dee2e6;
+}
+
+.clients-table thead {
+  background-color: #f8f9fa;
+}
+
+.clients-table th {
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+}
+
+.clients-table th:last-child {
+  border-right: none;
+}
+
+.clients-table tbody tr {
+  border-bottom: 1px solid #dee2e6;
+  transition: background-color 0.2s ease;
+  background-color: #ffffff;
+}
+
+/* Alternating row colors - zebra striping */
+.clients-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.clients-table tbody tr:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
+}
+
+.clients-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.clients-table td {
+  padding: 1.25rem 1.5rem;
+  color: #212529;
+  border-right: 1px solid #dee2e6;
+  text-align: center;
+}
+
+.clients-table td:last-child {
+  border-right: none;
+}
+
+.client-name {
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.client-email {
+  color: #6c757d;
+  text-align: center;
+}
+
+/* Clickable cells */
+.clickable {
+  cursor: pointer;
+}
+
+/* Actions cell styling */
+.actions-cell {
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.actions-cell button {
+  margin: 0 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Status Badge Colors */
+.status-active {
+  background-color: #28a745;  /* Green background */
+  color: #ffffff;              /* White text for better contrast */
+}
+
+.status-inactive {
+  background-color: #dc3545;  /* Red background */
+  color: #ffffff;              /* White text for better contrast */
+}
+
+.status-pending {
+  background-color: #ffc107;  /* Yellow/Amber background */
+  color: #212529;              /* Dark text for readability on yellow */
+}
+
+/* Responsive Design - Mobile First Approach */
+
+/* Tablet Styles (769px - 1024px) */
+@media (max-width: 1024px) {
+  .clients-container {
+    max-width: 100%;
+  }
+
+  .clients-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .clients-table th,
+  .clients-table td {
+    padding: 1rem 1.25rem;
+  }
+}
+
+/* Mobile Styles (max-width: 768px) */
+@media (max-width: 768px) {
+  .clients-container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .clients-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .clients-header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .clients-header > div {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .clients-count {
+    font-size: 0.875rem;
+  }
+
+  .add-client-button {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* Search Input Mobile */
+  .search-container {
+    margin-bottom: 1rem;
+  }
+
+  .search-input {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  /* Table Wrapper - Horizontal Scroll */
+  .clients-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    border-radius: 6px;
+  }
+
+  .clients-table {
+    min-width: 600px; /* Ensures table doesn't compress too much */
+    font-size: 0.875rem;
+  }
+
+  .clients-table th {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.3px;
+  }
+
+  .clients-table td {
+    padding: 0.875rem;
+  }
+
+  .actions-cell {
+    padding: 0.875rem 0.5rem;
+  }
+
+  .actions-cell button {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.75rem;
+    margin: 0 0.125rem;
+  }
+
+  .client-name {
+    font-size: 0.875rem;
+    min-width: 120px;
+  }
+
+  .client-email {
+    font-size: 0.8rem;
+    min-width: 180px;
+  }
+
+  /* Status Badge Mobile */
+  .status-badge {
+    padding: 0.25rem 0.625rem;
+    font-size: 0.7rem;
+  }
+
+  /* No Results Message */
+  .no-results {
+    padding: 1.5rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Small Mobile Styles (max-width: 480px) */
+@media (max-width: 480px) {
+  .clients-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .clients-count {
+    font-size: 0.8rem;
+  }
+
+  .add-client-button {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8rem;
+  }
+
+  .search-input {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .clients-table {
+    min-width: 550px;
+    font-size: 0.8rem;
+  }
+
+  .clients-table th {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .clients-table td {
+    padding: 0.75rem;
+  }
+
+  .client-name {
+    font-size: 0.8rem;
+    min-width: 100px;
+  }
+
+  .client-email {
+    font-size: 0.75rem;
+    min-width: 150px;
+  }
+
+  .status-badge {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.65rem;
+  }
+}
+
