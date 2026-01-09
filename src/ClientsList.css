@@ -1,12 +1,24 @@
 .clients-container {
   width: 100%;
   max-width: 1200px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 8px 24px rgba(102, 126, 234, 0.1);
+  border: 2px solid rgba(102, 126, 234, 0.25);
+  box-sizing: border-box;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.clients-container:hover {
+  box-shadow: 
+    0 24px 72px rgba(0, 0, 0, 0.18),
+    0 12px 32px rgba(102, 126, 234, 0.15);
+  border-color: rgba(102, 126, 234, 0.5);
 }
 
 .clients-header {
@@ -14,14 +26,31 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0;
+  border-bottom: none;
+  position: relative;
+}
+
+/* Completely remove crossbar - no gradient line */
+.clients-header::after,
+.clients-header::before {
+  display: none !important;
+  content: '' !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
 }
 
 .clients-header h1 {
   margin: 0;
-  color: #333;
-  font-size: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .clients-count {
@@ -32,19 +61,99 @@
 }
 
 .add-client-button {
-  padding: 0.5rem 1.25rem;
-  background-color: #28a745;
+  padding: 0.625rem 1.5rem;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.add-client-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
 }
 
 .add-client-button:hover {
-  background-color: #218838;
+  background: linear-gradient(135deg, #218838 0%, #1fa588 100%);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+  transform: translateY(-2px);
+}
+
+.add-client-button:active {
+  transform: translateY(0);
+}
+
+.reset-button {
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.reset-button:hover {
+  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+  box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+  transform: translateY(-2px);
+}
+
+.export-button {
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.export-button:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.import-button {
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+}
+
+.import-button:hover {
+  background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
+  box-shadow: 0 6px 20px rgba(23, 162, 184, 0.4);
+  transform: translateY(-2px);
 }
 
 /* Search Container */
@@ -54,18 +163,29 @@
 
 .search-input {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1.25rem;
   font-size: 1rem;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   box-sizing: border-box;
+  background: #ffffff !important;
+  color: #212529 !important;
+  outline: none;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: #667eea;
+  box-shadow: 
+    0 0 0 4px rgba(102, 126, 234, 0.15),
+    0 4px 12px rgba(102, 126, 234, 0.2);
+  background: #ffffff !important;
+  color: #212529 !important;
+}
+
+.search-input::placeholder {
+  color: #adb5bd !important;
 }
 
 .search-input::placeholder {
@@ -74,9 +194,12 @@
 
 .clients-table-wrapper {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(102, 126, 234, 0.08);
   overflow: hidden;
+  border: 1px solid rgba(102, 126, 234, 0.1);
 }
 
 .clients-table {
@@ -86,19 +209,33 @@
 }
 
 .clients-table thead {
-  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Completely remove crossbar from table header - no gradient line */
+.clients-table thead::after,
+.clients-table thead::before {
+  display: none !important;
+  content: '' !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+  background: none !important;
 }
 
 .clients-table th {
-  padding: 1rem 1.5rem;
+  padding: 1.25rem 1.5rem;
   text-align: center;
-  font-weight: 600;
+  font-weight: 700;
   color: #495057;
   font-size: 0.875rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid #dee2e6;
-  border-right: 1px solid #dee2e6;
+  letter-spacing: 1px;
+  border-bottom: none;
+  border-right: 1px solid rgba(102, 126, 234, 0.1);
+  position: relative;
 }
 
 .clients-table th:last-child {
@@ -106,19 +243,26 @@
 }
 
 .clients-table tbody tr {
-  border-bottom: 1px solid #dee2e6;
-  transition: background-color 0.2s ease;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: #ffffff;
+  position: relative;
 }
 
 /* Alternating row colors - zebra striping */
 .clients-table tbody tr:nth-child(even) {
-  background-color: #f8f9fa;
+  background-color: rgba(102, 126, 234, 0.02);
 }
 
 .clients-table tbody tr:hover {
-  background-color: #e9ecef;
+  background: linear-gradient(90deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
   cursor: pointer;
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.clients-table tbody tr:hover td {
+  color: #667eea;
 }
 
 .clients-table tbody tr:last-child {
@@ -147,6 +291,50 @@
   text-align: center;
 }
 
+.project-type-cell {
+  position: relative;
+  cursor: help;
+}
+
+.project-type-cell:hover {
+  text-decoration: underline;
+  color: #007bff;
+}
+
+/* Custom Tooltip for Project Description - Centered, compact size */
+.project-type-cell[title]:not([title=""]):hover::after {
+  content: attr(title);
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem 1.25rem;
+  background-color: rgba(26, 26, 26, 0.98);
+  color: #fff;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 400;
+  white-space: normal;
+  width: 300px;
+  max-width: 90vw;
+  max-height: 50vh;
+  z-index: 99999;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  line-height: 1.5;
+  text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+/* Hide arrow */
+.project-type-cell[title]:not([title=""]):hover::before {
+  display: none;
+}
+
 /* Clickable cells */
 .clickable {
   cursor: pointer;
@@ -172,21 +360,27 @@
 }
 
 .edit-button {
-  background-color: #007bff;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
   color: white;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
 }
 
 .edit-button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+  transform: translateY(-2px);
 }
 
 .delete-button {
-  background-color: #dc3545;
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
   color: white;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
 }
 
 .delete-button:hover {
-  background-color: #c82333;
+  background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+  transform: translateY(-2px);
 }
 
 .no-results {
@@ -196,31 +390,60 @@
   font-style: italic;
 }
 
-/* Status Badges */
+/* Status Badges - Button Style with Colors */
 .status-badge {
   display: inline-block;
-  padding: 0.375rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border: none;
+  cursor: default;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  min-width: 90px;
+  text-align: center;
 }
 
-/* Status Badge Colors */
-.status-active {
-  background-color: #28a745;  /* Green background */
-  color: #ffffff;              /* White text for better contrast */
+/* Status Badge Colors - TO DO (Red) */
+.status-to-do {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: #ffffff;
+  border: 2px solid #dc3545;
 }
 
-.status-inactive {
-  background-color: #dc3545;  /* Red background */
-  color: #ffffff;              /* White text for better contrast */
+.status-to-do:hover {
+  background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
+  transform: translateY(-2px);
 }
 
-.status-pending {
-  background-color: #ffc107;  /* Yellow/Amber background */
-  color: #212529;              /* Dark text for readability on yellow */
+/* Status Badge Colors - IN PROGRESS (Green) */
+.status-in-progress {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: #ffffff;
+  border: 2px solid #28a745;
+}
+
+.status-in-progress:hover {
+  background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Status Badge Colors - DONE (Yellow) */
+.status-done {
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  color: #212529;
+  border: 2px solid #ffc107;
+}
+
+.status-done:hover {
+  background: linear-gradient(135deg, #ffb300 0%, #f57c00 100%);
+  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
+  transform: translateY(-2px);
 }
 
 /* Responsive Design - Mobile First Approach */

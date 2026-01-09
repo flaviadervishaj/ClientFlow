@@ -1,19 +1,32 @@
 import './ClientDetails.css'
 
 function ClientDetails({ client, onClose, onEdit, onDelete }) {
+  // Helper function to format date from YYYY-MM-DD to "Month Day, Year"
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A'
+    
+    try {
+      const date = new Date(dateString + 'T00:00:00') // Add time to avoid timezone issues
+      const options = { year: 'numeric', month: 'long', day: 'numeric' }
+      return date.toLocaleDateString('en-US', options)
+    } catch (error) {
+      return dateString // Return original if parsing fails
+    }
+  }
+
   // Helper function to get status badge class
   const getStatusClass = (status) => {
     const statusLower = status.toLowerCase()
-    if (statusLower === 'active') return 'status-badge status-active'
-    if (statusLower === 'inactive') return 'status-badge status-inactive'
-    if (statusLower === 'pending') return 'status-badge status-pending'
+    if (statusLower === 'in progress') return 'status-badge status-in-progress'
+    if (statusLower === 'done') return 'status-badge status-done'
+    if (statusLower === 'to do') return 'status-badge status-to-do'
     return 'status-badge'
   }
 
   return (
     <div className="client-details-container">
       <div className="client-details-header">
-        <h2>Client Details</h2>
+        <h2>Project Details</h2>
         <button onClick={onClose} className="close-button">
           ← Back to List
         </button>
@@ -31,6 +44,17 @@ function ClientDetails({ client, onClose, onEdit, onDelete }) {
         </div>
 
         <div className="detail-row">
+          <span className="detail-label">Project Type:</span>
+          <span className="detail-value">{client.projectType || 'N/A'}</span>
+        </div>
+
+
+        <div className="detail-row">
+          <span className="detail-label">Deadline:</span>
+          <span className="detail-value">{formatDate(client.deadline)}</span>
+        </div>
+
+        <div className="detail-row">
           <span className="detail-label">Status:</span>
           <span className={getStatusClass(client.status)}>
             {client.status}
@@ -39,10 +63,10 @@ function ClientDetails({ client, onClose, onEdit, onDelete }) {
 
         <div className="detail-actions">
           <button onClick={onEdit} className="edit-button-details">
-            Edit Client
+            Edit Project
           </button>
           <button onClick={onDelete} className="delete-button-details">
-            Delete Client
+            Delete Project
           </button>
         </div>
       </div>

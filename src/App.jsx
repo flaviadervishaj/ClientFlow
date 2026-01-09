@@ -60,14 +60,14 @@ function App() {
         <ul className="sidebar-menu">
           <li className="sidebar-menu-item active">
             <span className="menu-icon">📋</span>
-            <span>Clients</span>
+            <span>Projects</span>
           </li>
           <li 
             className="sidebar-menu-item"
             onClick={handleAddClientClick}
           >
             <span className="menu-icon">➕</span>
-            <span>Add Client</span>
+            <span>Add Project</span>
           </li>
         </ul>
       </div>
