@@ -62,7 +62,7 @@
 
 .add-client-button {
   padding: 0.625rem 1.5rem;
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -70,7 +70,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  box-shadow: 0 4px 12px rgba(240, 147, 251, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -89,8 +89,8 @@
 }
 
 .add-client-button:hover {
-  background: linear-gradient(135deg, #218838 0%, #1fa588 100%);
-  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+  background: linear-gradient(135deg, #e084f0 0%, #e4465a 100%);
+  box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
   transform: translateY(-2px);
 }
 
@@ -98,28 +98,9 @@
   transform: translateY(0);
 }
 
-.reset-button {
-  padding: 0.625rem 1.25rem;
-  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
-}
-
-.reset-button:hover {
-  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
-  box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
-  transform: translateY(-2px);
-}
-
 .export-button {
   padding: 0.625rem 1.25rem;
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -127,18 +108,18 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .export-button:hover {
-  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
-  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+  background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
   transform: translateY(-2px);
 }
 
 .import-button {
   padding: 0.625rem 1.25rem;
-  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -147,12 +128,12 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-block;
-  box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .import-button:hover {
-  background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
-  box-shadow: 0 6px 20px rgba(23, 162, 184, 0.4);
+  background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
   transform: translateY(-2px);
 }
 
@@ -182,10 +163,6 @@
     0 4px 12px rgba(102, 126, 234, 0.2);
   background: #ffffff !important;
   color: #212529 !important;
-}
-
-.search-input::placeholder {
-  color: #adb5bd !important;
 }
 
 .search-input::placeholder {

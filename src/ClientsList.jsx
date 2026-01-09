@@ -4,7 +4,6 @@ import AddClient from './AddClient'
 import EditClient from './EditClient'
 import './ClientsList.css'
 
-// Default projects data (used only if localStorage is empty)
 const defaultClients = [
   { id: 1, name: 'John Smith', email: 'john.smith@example.com', projectType: 'E-commerce Website', deadline: '2026-03-15', status: 'In Progress', description: 'Modern e-commerce platform with shopping cart and payment integration.' },
   { id: 2, name: 'Sarah Johnson', email: 'sarah.j@example.com', projectType: 'Streaming Platform', deadline: '2026-05-20', status: 'To Do', description: 'Video streaming website with user subscriptions and recommendation engine.' },
@@ -15,23 +14,19 @@ const defaultClients = [
 ]
 
 function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
-  // Function to convert old statuses to new ones
   const convertOldStatus = (status) => {
     const statusLower = status.toLowerCase()
     if (statusLower === 'active') return 'In Progress'
     if (statusLower === 'inactive') return 'To Do'
     if (statusLower === 'pending') return 'To Do'
-    return status // Return as is if already new status
+    return status
   }
 
-  // Function to update deadline year to 2026 if it's in 2024 or other years
   const updateDeadlineYear = (deadline) => {
     if (!deadline) return deadline
-    // Extract year from deadline (format: YYYY-MM-DD)
     const yearMatch = deadline.match(/^(\d{4})-/)
     if (yearMatch) {
       const year = parseInt(yearMatch[1])
-      // If year is not 2026, update it to 2026
       if (year !== 2026) {
         return deadline.replace(/^\d{4}-/, '2026-')
       }
@@ -39,24 +34,12 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
     return deadline
   }
 
-  // Load clients from localStorage on component mount, or use default data
   const [clients, setClients] = useState(() => {
-    // Check if we should reset to defaults (for testing)
-    const shouldReset = localStorage.getItem('resetToDefaults') === 'true'
-    if (shouldReset) {
-      localStorage.removeItem('resetToDefaults')
-      localStorage.removeItem('clients')
-      return defaultClients
-    }
-
-    // Try to get clients from localStorage
     const savedClients = localStorage.getItem('clients')
     if (savedClients) {
       try {
-        // Parse the JSON string back to an array
         const parsed = JSON.parse(savedClients)
         
-        // Check if we need to update (if data structure is old or missing new fields)
         const needsUpdate = parsed.some(client => 
           !client.hasOwnProperty('projectType') || 
           !client.hasOwnProperty('deadline') ||
@@ -64,19 +47,16 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
         )
         
         if (needsUpdate) {
-          // Convert old data to new format
           const converted = parsed.map(client => ({
             ...client,
             projectType: client.projectType || 'N/A',
             deadline: updateDeadlineYear(client.deadline || ''),
             status: convertOldStatus(client.status)
           }))
-          // Save converted data back to localStorage
           localStorage.setItem('clients', JSON.stringify(converted))
           return converted
         }
         
-        // Convert old statuses and deadlines to new ones even if structure is OK
         const converted = parsed.map(client => ({
           ...client,
           deadline: updateDeadlineYear(client.deadline || ''),
@@ -85,48 +65,35 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
         localStorage.setItem('clients', JSON.stringify(converted))
         return converted
       } catch (error) {
-        // If parsing fails, use default clients
         return defaultClients
       }
     }
-    // If no saved data, use default clients
     return defaultClients
   })
 
-  // State to store the selected client
   const [selectedClient, setSelectedClient] = useState(null)
 
-  // State to show/hide the Add Client form (use prop if provided from parent)
   const [internalShowAddForm, setInternalShowAddForm] = useState(false)
   const showAddForm = showAddFormProp !== undefined ? showAddFormProp : internalShowAddForm
   const setShowAddForm = onShowAddForm || setInternalShowAddForm
 
-  // State to show/hide the Edit Client form
   const [showEditForm, setShowEditForm] = useState(false)
   const [clientToEdit, setClientToEdit] = useState(null)
-
-  // State to store the search query
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Save clients to localStorage whenever clients array changes
   useEffect(() => {
-    // Convert clients array to JSON string and save to localStorage
     localStorage.setItem('clients', JSON.stringify(clients))
-  }, [clients]) // This runs whenever 'clients' changes
+  }, [clients])
 
-  // Function to handle row click - sets the selected client
   const handleRowClick = (client) => {
     setSelectedClient(client)
   }
 
-  // Function to close the details view
   const handleCloseDetails = () => {
     setSelectedClient(null)
   }
 
-  // Function to handle adding a new client
   const handleAddClient = (newClient) => {
-    // Create a new client object with a unique ID
     const clientToAdd = {
       id: clients.length > 0 ? Math.max(...clients.map(c => c.id)) + 1 : 1,
       name: newClient.name,
@@ -136,52 +103,34 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
       status: newClient.status,
       description: newClient.description || ''
     }
-
-    // Add the new client to the clients array
     setClients([...clients, clientToAdd])
-    // Note: useEffect will automatically save to localStorage
-    
-    // Close the form after adding
     setShowAddForm(false)
   }
 
-  // Function to handle editing a client
   const handleEditClient = (editedClient) => {
-    // Update the client in the array by finding it by ID and replacing it
     setClients(clients.map(client => 
       client.id === editedClient.id ? editedClient : client
     ))
-    // Note: useEffect will automatically save to localStorage
-    
-    // Close the edit form and reset
     setShowEditForm(false)
     setClientToEdit(null)
-    setSelectedClient(null) // Close details view if open
+    setSelectedClient(null)
   }
 
-  // Function to handle deleting a client
   const handleDeleteClient = (clientId) => {
-    // Show confirmation dialog
     if (window.confirm('Are you sure you want to delete this project?')) {
-      // Filter out the client with the matching ID
       setClients(clients.filter(client => client.id !== clientId))
-      // Note: useEffect will automatically save to localStorage
-      
-      // Close details view if the deleted client was selected
       if (selectedClient && selectedClient.id === clientId) {
         setSelectedClient(null)
       }
     }
   }
 
-  // Function to open edit form
   const handleEditClick = (client) => {
     setClientToEdit(client)
     setShowEditForm(true)
-    setSelectedClient(null) // Close details view
+    setSelectedClient(null)
   }
 
-  // Function to export data as JSON file
   const handleExportData = () => {
     const dataStr = JSON.stringify(clients, null, 2)
     const dataBlob = new Blob([dataStr], { type: 'application/json' })
@@ -196,7 +145,6 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
     alert('Projects data exported successfully!')
   }
 
-  // Function to import data from JSON file
   const handleImportData = (event) => {
     const file = event.target.files[0]
     if (!file) return
@@ -206,15 +154,12 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
       try {
         const importedData = JSON.parse(e.target.result)
         
-        // Validate that it's an array
         if (!Array.isArray(importedData)) {
           alert('Invalid file format! The file must contain an array of projects.')
           return
         }
 
-        // Confirm before importing
         if (window.confirm(`This will replace all current projects with ${importedData.length} projects from the file. Continue?`)) {
-          // Update deadlines to 2026 and convert old statuses
           const processedData = importedData.map(client => ({
             ...client,
             deadline: updateDeadlineYear(client.deadline || ''),
@@ -226,39 +171,31 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
         }
       } catch (error) {
         alert('Error importing file! Please make sure it\'s a valid JSON file.')
-        console.error('Import error:', error)
       }
     }
     reader.readAsText(file)
-    
-    // Reset file input so same file can be imported again
     event.target.value = ''
   }
 
-  // Filter clients based on search query
   const filteredClients = clients.filter((client) => {
-    // Convert both search query and client name to lowercase for case-insensitive search
     const searchLower = searchQuery.toLowerCase()
-    const clientNameLower = client.name.toLowerCase()
-    
-    // Return true if client name includes the search query
-    return clientNameLower.includes(searchLower)
+    const matchesName = client.name.toLowerCase().includes(searchLower)
+    const matchesEmail = client.email.toLowerCase().includes(searchLower)
+    const matchesProjectType = (client.projectType || '').toLowerCase().includes(searchLower)
+    return matchesName || matchesEmail || matchesProjectType
   })
 
-  // Helper function to format date from YYYY-MM-DD to "Month Day, Year"
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A'
-    
     try {
-      const date = new Date(dateString + 'T00:00:00') // Add time to avoid timezone issues
+      const date = new Date(dateString + 'T00:00:00')
       const options = { year: 'numeric', month: 'long', day: 'numeric' }
       return date.toLocaleDateString('en-US', options)
     } catch (error) {
-      return dateString // Return original if parsing fails
+      return dateString
     }
   }
 
-  // Helper function to get status badge class
   const getStatusClass = (status) => {
     const statusLower = status.toLowerCase()
     if (statusLower === 'in progress') return 'status-badge status-in-progress'
@@ -267,7 +204,6 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
     return 'status-badge'
   }
 
-  // If the Add Client form should be shown
   if (showAddForm) {
     return (
       <div className="clients-container">
@@ -279,7 +215,6 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
     )
   }
 
-  // If the Edit Client form should be shown
   if (showEditForm && clientToEdit) {
     return (
       <div className="clients-container">
@@ -295,7 +230,6 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
     )
   }
 
-  // If a client is selected, show the details view
   if (selectedClient) {
     return (
       <div className="clients-container">
@@ -309,7 +243,6 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
     )
   }
 
-  // Otherwise, show the clients list
   return (
     <div className="clients-container">
       <div className="clients-header">
@@ -341,16 +274,6 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
             />
           </label>
           <button 
-            onClick={() => {
-              localStorage.setItem('resetToDefaults', 'true')
-              window.location.reload()
-            }}
-            className="reset-button"
-            title="Reset to default projects"
-          >
-            🔄 Reset
-          </button>
-          <button 
             onClick={() => setShowAddForm(true)}
             className="add-client-button"
           >
@@ -359,12 +282,11 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
         </div>
       </div>
 
-      {/* Search Input */}
       <div className="search-container">
         <input
           type="text"
           className="search-input"
-          placeholder="Search projects by name..."
+          placeholder="Search by name, email, or project type..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -423,7 +345,7 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
                     <button
                       className="edit-button"
                       onClick={(e) => {
-                        e.stopPropagation() // Prevent row click
+                        e.stopPropagation()
                         handleEditClick(client)
                       }}
                       title="Edit client"
@@ -433,7 +355,7 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
                     <button
                       className="delete-button"
                       onClick={(e) => {
-                        e.stopPropagation() // Prevent row click
+                        e.stopPropagation()
                         handleDeleteClient(client.id)
                       }}
                       title="Delete client"
@@ -458,5 +380,3 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
 }
 
 export default ClientsList
-
-

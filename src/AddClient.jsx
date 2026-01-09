@@ -2,7 +2,6 @@ import { useState } from 'react'
 import './AddClient.css'
 
 function AddClient({ onAddClient, onCancel }) {
-  // State to store form input values
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -12,7 +11,6 @@ function AddClient({ onAddClient, onCancel }) {
     description: ''
   })
 
-  // Function to handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({
@@ -21,14 +19,20 @@ function AddClient({ onAddClient, onCancel }) {
     })
   }
 
-  // Function to handle form submission
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  }
+
   const handleSubmit = (e) => {
-    e.preventDefault() // Prevents page refresh
+    e.preventDefault()
     
-    // Call the onAddClient function passed from parent with form data
+    if (!isValidEmail(formData.email)) {
+      alert('Please enter a valid email address')
+      return
+    }
+    
     onAddClient(formData)
     
-    // Reset form after submission
     setFormData({
       name: '',
       email: '',

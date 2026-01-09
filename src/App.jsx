@@ -3,26 +3,19 @@ import ClientsList from './ClientsList'
 import './App.css'
 
 function App() {
-  // State to control sidebar visibility on mobile
   const [sidebarOpen, setSidebarOpen] = useState(false)
-
-  // State to control Add Client form (shared with ClientsList)
   const [showAddForm, setShowAddForm] = useState(false)
 
-  // Function to toggle sidebar
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen)
   }
 
-  // Function to close sidebar when clicking outside on mobile
   const closeSidebar = () => {
     setSidebarOpen(false)
   }
 
-  // Function to handle Add Client click from sidebar
   const handleAddClientClick = () => {
     setShowAddForm(true)
-    // Close sidebar on mobile after clicking
     if (window.innerWidth <= 768) {
       setSidebarOpen(false)
     }
@@ -30,7 +23,6 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* Hamburger Menu Button (visible only on mobile) */}
       <button 
         className="hamburger-button"
         onClick={toggleSidebar}
@@ -41,7 +33,6 @@ function App() {
         <span className="hamburger-icon"></span>
       </button>
 
-      {/* Overlay (visible when sidebar is open on mobile) */}
       {sidebarOpen && (
         <div 
           className="sidebar-overlay" 
@@ -49,7 +40,6 @@ function App() {
         ></div>
       )}
 
-      {/* Sidebar */}
       <div className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
         <div className="sidebar-header">
           <div className="logo-container">
@@ -72,7 +62,6 @@ function App() {
         </ul>
       </div>
 
-      {/* Main content */}
       <div className="main-content">
         <ClientsList 
           showAddForm={showAddForm}

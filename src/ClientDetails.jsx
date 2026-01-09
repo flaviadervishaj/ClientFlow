@@ -1,20 +1,17 @@
 import './ClientDetails.css'
 
 function ClientDetails({ client, onClose, onEdit, onDelete }) {
-  // Helper function to format date from YYYY-MM-DD to "Month Day, Year"
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A'
-    
     try {
-      const date = new Date(dateString + 'T00:00:00') // Add time to avoid timezone issues
+      const date = new Date(dateString + 'T00:00:00')
       const options = { year: 'numeric', month: 'long', day: 'numeric' }
       return date.toLocaleDateString('en-US', options)
     } catch (error) {
-      return dateString // Return original if parsing fails
+      return dateString
     }
   }
 
-  // Helper function to get status badge class
   const getStatusClass = (status) => {
     const statusLower = status.toLowerCase()
     if (statusLower === 'in progress') return 'status-badge status-in-progress'
@@ -48,6 +45,12 @@ function ClientDetails({ client, onClose, onEdit, onDelete }) {
           <span className="detail-value">{client.projectType || 'N/A'}</span>
         </div>
 
+        {client.description && (
+          <div className="detail-row detail-row-description">
+            <span className="detail-label">Description:</span>
+            <span className="detail-value">{client.description}</span>
+          </div>
+        )}
 
         <div className="detail-row">
           <span className="detail-label">Deadline:</span>

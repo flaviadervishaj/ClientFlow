@@ -202,7 +202,7 @@
   box-sizing: border-box;
   position: relative;
   overflow-x: hidden;
-}
+  }
 
 /* Animated background pattern */
 .main-content::before {
@@ -320,13 +320,13 @@
     width: 220px; /* Slightly wider to fit text better */
     transform: translateX(0); /* Ensure visible on tablet */
     padding: 18px;
-  }
+}
 
   .main-content {
     margin-left: 220px;
     width: calc(100% - 220px);
     padding: 1.5rem;
-  }
+}
 
   .sidebar-header h2 {
     font-size: 1.3rem;

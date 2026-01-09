@@ -81,13 +81,18 @@
 
 .detail-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 1rem 0;
   border-bottom: 1px solid #e9ecef;
 }
 
 .detail-row:last-child {
   border-bottom: none;
+}
+
+.detail-row-description {
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .detail-label {
@@ -101,6 +106,9 @@
   color: #212529;
   font-size: 1rem;
   flex: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.5;
 }
 
 /* Status Badge Styles (same as ClientsList) */

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import './AddClient.css' // Reuse AddClient styles
+import './AddClient.css'
 
 function EditClient({ client, onEditClient, onCancel }) {
-  // Initialize form data with the client being edited
   const [formData, setFormData] = useState({
     name: client.name,
     email: client.email,
@@ -12,7 +11,6 @@ function EditClient({ client, onEditClient, onCancel }) {
     description: client.description || ''
   })
 
-  // Update form data if client prop changes
   useEffect(() => {
     setFormData({
       name: client.name,
@@ -24,7 +22,6 @@ function EditClient({ client, onEditClient, onCancel }) {
     })
   }, [client])
 
-  // Function to handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({
@@ -33,13 +30,20 @@ function EditClient({ client, onEditClient, onCancel }) {
     })
   }
 
-  // Function to handle form submission
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  }
+
   const handleSubmit = (e) => {
-    e.preventDefault() // Prevents page refresh
+    e.preventDefault()
     
-    // Create updated client object with same ID
+    if (!isValidEmail(formData.email)) {
+      alert('Please enter a valid email address')
+      return
+    }
+    
     const updatedClient = {
-      id: client.id, // Keep the same ID
+      id: client.id,
       name: formData.name,
       email: formData.email,
       projectType: formData.projectType,
@@ -48,7 +52,6 @@ function EditClient({ client, onEditClient, onCancel }) {
       description: formData.description
     }
     
-    // Call the onEditClient function passed from parent
     onEditClient(updatedClient)
   }
 
