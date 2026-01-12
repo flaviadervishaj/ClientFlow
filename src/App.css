@@ -287,6 +287,7 @@
 
   .sidebar-header {
     margin-bottom: 1.5rem;
+    padding-top: 4rem; /* Space for hamburger button */
   }
 
   .logo-container {
