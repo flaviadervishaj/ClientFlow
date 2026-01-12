@@ -246,17 +246,19 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
   return (
     <div className="clients-container">
       <div className="clients-header">
-        <h1>Projects List</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+        <div className="clients-header-top">
+          <h1>Projects List</h1>
           <p className="clients-count">
             Showing: {filteredClients.length} of {clients.length} projects
           </p>
+        </div>
+        <div className="clients-header-buttons">
           <button 
             onClick={handleExportData}
             className="export-button"
             title="Export all projects to JSON file"
           >
-            📥 Export Data
+            📥 Export
           </button>
           <label 
             htmlFor="import-file"
@@ -264,7 +266,7 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
             title="Import projects from JSON file"
             style={{ cursor: 'pointer' }}
           >
-            📤 Import Data
+            📤 Import
             <input
               id="import-file"
               type="file"
@@ -277,7 +279,7 @@ function ClientsList({ showAddForm: showAddFormProp, onShowAddForm }) {
             onClick={() => setShowAddForm(true)}
             className="add-client-button"
           >
-            + Add Project
+            + Add
           </button>
         </div>
       </div>
