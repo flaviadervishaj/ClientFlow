@@ -277,3 +277,6 @@ Nëse ka gabime, rregulloji fillimisht lokal.
 
 **Suksese me deploy! Nëse ke pyetje, më thuaj!** 🚀
 
+
+
+

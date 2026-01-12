@@ -275,8 +275,8 @@
   .main-content {
     margin-left: 0;
     width: 100%;
-    padding: 1rem;
-    padding-top: 4rem; /* Space for hamburger button */
+    padding: 0.75rem;
+    padding-top: 3.5rem; /* Space for hamburger button */
   }
 
   /* Adjust sidebar padding on mobile */
