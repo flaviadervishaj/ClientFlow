@@ -7,7 +7,7 @@ function App() {
   const [showAddForm, setShowAddForm] = useState(false)
 
   const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen)
+    setSidebarOpen((isOpen) => !isOpen)
   }
 
   const closeSidebar = () => {
@@ -26,7 +26,8 @@ function App() {
       <button 
         className="hamburger-button"
         onClick={toggleSidebar}
-        aria-label="Toggle menu"
+        aria-label={sidebarOpen ? 'Close menu' : 'Open menu'}
+        aria-expanded={sidebarOpen}
       >
         <span className="hamburger-icon"></span>
         <span className="hamburger-icon"></span>
@@ -40,27 +41,29 @@ function App() {
         ></div>
       )}
 
-      <div className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
+      <aside className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
         <div className="sidebar-header">
           <div className="logo-container">
             <div className="logo-icon">CF</div>
             <h2 className="logo-text">ClientFlow</h2>
           </div>
         </div>
-        <ul className="sidebar-menu">
-          <li className="sidebar-menu-item active">
+        <nav className="sidebar-menu" aria-label="Main navigation">
+          <button className="sidebar-menu-item active" type="button">
             <span className="menu-icon">📋</span>
             <span>Projects</span>
-          </li>
-          <li 
+          </button>
+          <button
+            type="button"
             className="sidebar-menu-item"
             onClick={handleAddClientClick}
           >
             <span className="menu-icon">➕</span>
             <span>Add Project</span>
-          </li>
-        </ul>
-      </div>
+          </button>
+        </nav>
+        <p className="sidebar-footer">Simple client project management</p>
+      </aside>
 
       <div className="main-content">
         <ClientsList 
