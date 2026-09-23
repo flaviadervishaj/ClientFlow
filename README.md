@@ -1,66 +1,16 @@
-# ClientFlow
+# React + Vite
 
-ClientFlow is a responsive project management dashboard for freelancers and small teams. It keeps client details, project deadlines and delivery status together in a focused workspace.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Features
+Currently, two official plugins are available:
 
-- Create, edit, view and delete client projects
-- Search by client, email or project type
-- Filter projects by delivery status
-- View live project summary statistics
-- Save data automatically in browser storage
-- Import and export JSON backups
-- Responsive table-to-card layout for mobile devices
-- Accessible form validation and keyboard-friendly controls
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Tech stack
+## React Compiler
 
-- React 19
-- JavaScript
-- Vite
-- CSS
-- Browser Local Storage API
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Run locally
+## Expanding the ESLint configuration
 
-```bash
-git clone https://github.com/flaviadervishaj/ClientFlow.git
-cd ClientFlow
-npm install
-npm run dev
-```
-
-Open the local address shown by Vite.
-
-## Available scripts
-
-```bash
-npm run dev      # Start the development server
-npm run lint     # Check the code with ESLint
-npm run build    # Create a production build
-npm run preview  # Preview the production build
-```
-
-## Data storage
-
-The app stores project data in the browser, so no account or backend is required. The Export and Import actions can be used to move a project list between browsers or keep a backup.
-
-## Project structure
-
-```text
-src/
-├── App.jsx
-├── ClientsList.jsx
-├── ProjectForm.jsx
-├── AddClient.jsx
-├── EditClient.jsx
-├── ClientDetails.jsx
-└── *.css
-```
-
-## Future improvements
-
-- Optional account authentication
-- Cloud database synchronization
-- Team collaboration and activity history
-- Deadline reminders
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

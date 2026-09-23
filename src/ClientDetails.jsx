@@ -1,51 +1,81 @@
 import './ClientDetails.css'
 
-const formatDate = (dateString) => {
-  if (!dateString) return 'No deadline'
-  const date = new Date(`${dateString}T00:00:00`)
-  if (Number.isNaN(date.getTime())) return dateString
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-}
-
-const getStatusClass = (status) => `status-badge status-${status.toLowerCase().replaceAll(' ', '-')}`
-
 function ClientDetails({ client, onClose, onEdit, onDelete }) {
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A'
+    try {
+      const date = new Date(dateString + 'T00:00:00')
+      const options = { year: 'numeric', month: 'long', day: 'numeric' }
+      return date.toLocaleDateString('en-US', options)
+    } catch (error) {
+      return dateString
+    }
+  }
+
+  const getStatusClass = (status) => {
+    const statusLower = status.toLowerCase()
+    if (statusLower === 'in progress') return 'status-badge status-in-progress'
+    if (statusLower === 'done') return 'status-badge status-done'
+    if (statusLower === 'to do') return 'status-badge status-to-do'
+    return 'status-badge'
+  }
+
   return (
-    <section className="client-details-container">
-      <div className="details-heading">
-        <div>
-          <p className="eyebrow">Project profile</p>
-          <h1>{client.projectType || 'Project details'}</h1>
-          <p>Review the client information and current delivery status.</p>
-        </div>
-        <button onClick={onClose} className="back-button">← Back</button>
+    <div className="client-details-container">
+      <div className="client-details-header">
+        <h2>Project Details</h2>
+        <button onClick={onClose} className="close-button">
+          ← Back to List
+        </button>
       </div>
 
       <div className="client-details-card">
-        <div className="client-summary">
-          <div className="client-avatar" aria-hidden="true">
-            {client.name.split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase()}
-          </div>
-          <div>
-            <h2>{client.name}</h2>
-            <a href={`mailto:${client.email}`}>{client.email}</a>
-          </div>
-          <span className={getStatusClass(client.status)}>{client.status}</span>
+        <div className="detail-row">
+          <span className="detail-label">Name:</span>
+          <span className="detail-value">{client.name}</span>
         </div>
 
-        <dl className="details-list">
-          <div><dt>Project type</dt><dd>{client.projectType || 'Not specified'}</dd></div>
-          <div><dt>Deadline</dt><dd>{formatDate(client.deadline)}</dd></div>
-          <div className="full-row"><dt>Description</dt><dd>{client.description || 'No project description has been added yet.'}</dd></div>
-        </dl>
+        <div className="detail-row">
+          <span className="detail-label">Email:</span>
+          <span className="detail-value">{client.email}</span>
+        </div>
+
+        <div className="detail-row">
+          <span className="detail-label">Project Type:</span>
+          <span className="detail-value">{client.projectType || 'N/A'}</span>
+        </div>
+
+        {client.description && (
+          <div className="detail-row detail-row-description">
+            <span className="detail-label">Description:</span>
+            <span className="detail-value">{client.description}</span>
+          </div>
+        )}
+
+        <div className="detail-row">
+          <span className="detail-label">Deadline:</span>
+          <span className="detail-value">{formatDate(client.deadline)}</span>
+        </div>
+
+        <div className="detail-row">
+          <span className="detail-label">Status:</span>
+          <span className={getStatusClass(client.status)}>
+            {client.status}
+          </span>
+        </div>
 
         <div className="detail-actions">
-          <button onClick={onEdit} className="primary-button">Edit project</button>
-          <button onClick={onDelete} className="delete-project-button">Delete project</button>
+          <button onClick={onEdit} className="edit-button-details">
+            Edit Project
+          </button>
+          <button onClick={onDelete} className="delete-button-details">
+            Delete Project
+          </button>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 
 export default ClientDetails
+
