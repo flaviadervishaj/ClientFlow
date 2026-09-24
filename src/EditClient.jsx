@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './AddClient.css'
 
 function EditClient({ client, onEditClient, onCancel }) {
@@ -10,17 +10,6 @@ function EditClient({ client, onEditClient, onCancel }) {
     status: client.status,
     description: client.description || ''
   })
-
-  useEffect(() => {
-    setFormData({
-      name: client.name,
-      email: client.email,
-      projectType: client.projectType || '',
-      deadline: client.deadline || '',
-      status: client.status,
-      description: client.description || ''
-    })
-  }, [client])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -66,7 +55,7 @@ function EditClient({ client, onEditClient, onCancel }) {
 
       <form onSubmit={handleSubmit} className="add-client-form">
         <div className="form-group">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">Client name</label>
           <input
             type="text"
             id="name"
@@ -99,7 +88,7 @@ function EditClient({ client, onEditClient, onCancel }) {
             name="projectType"
             value={formData.projectType}
             onChange={handleChange}
-            placeholder="e.g., Web per Dyqan, Web per Filma"
+            placeholder="e.g. E-commerce website"
           />
         </div>
 
@@ -121,18 +110,8 @@ function EditClient({ client, onEditClient, onCancel }) {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            rows="3"
+            rows="4"
             placeholder="Enter a brief description of the project (2-3 sentences)..."
-            style={{ 
-              width: '100%', 
-              padding: '0.75rem 1rem', 
-              border: '1px solid #ced4da', 
-              borderRadius: '6px',
-              fontFamily: 'inherit',
-              fontSize: '1rem',
-              resize: 'vertical',
-              boxSizing: 'border-box'
-            }}
           />
         </div>
 
@@ -165,4 +144,3 @@ function EditClient({ client, onEditClient, onCancel }) {
 }
 
 export default EditClient
-

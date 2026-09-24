@@ -6,70 +6,52 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showAddForm, setShowAddForm] = useState(false)
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen)
-  }
-
-  const closeSidebar = () => {
+  const openAddForm = () => {
+    setShowAddForm(true)
     setSidebarOpen(false)
   }
 
-  const handleAddClientClick = () => {
-    setShowAddForm(true)
-    if (window.innerWidth <= 768) {
-      setSidebarOpen(false)
-    }
-  }
-
   return (
-    <div className="app-container">
-      <button 
-        className="hamburger-button"
-        onClick={toggleSidebar}
-        aria-label="Toggle menu"
+    <div className="app-shell">
+      <button
+        className="mobile-menu-button"
+        onClick={() => setSidebarOpen((isOpen) => !isOpen)}
+        aria-label="Toggle navigation"
+        aria-expanded={sidebarOpen}
       >
-        <span className="hamburger-icon"></span>
-        <span className="hamburger-icon"></span>
-        <span className="hamburger-icon"></span>
+        <span></span><span></span><span></span>
       </button>
 
-      {sidebarOpen && (
-        <div 
-          className="sidebar-overlay" 
-          onClick={closeSidebar}
-        ></div>
-      )}
+      {sidebarOpen ? <button className="sidebar-overlay" onClick={() => setSidebarOpen(false)} aria-label="Close navigation" /> : null}
 
-      <div className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
-        <div className="sidebar-header">
-          <div className="logo-container">
-            <div className="logo-icon">CF</div>
-            <h2 className="logo-text">ClientFlow</h2>
-          </div>
+      <aside className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
+        <div className="brand">
+          <span className="brand-mark">CF</span>
+          <span><strong>ClientFlow</strong><small>Project workspace</small></span>
         </div>
-        <ul className="sidebar-menu">
-          <li className="sidebar-menu-item active">
-            <span className="menu-icon">📋</span>
-            <span>Projects</span>
-          </li>
-          <li 
-            className="sidebar-menu-item"
-            onClick={handleAddClientClick}
-          >
-            <span className="menu-icon">➕</span>
-            <span>Add Project</span>
-          </li>
-        </ul>
-      </div>
 
-      <div className="main-content">
-        <ClientsList 
-          showAddForm={showAddForm}
-          onShowAddForm={setShowAddForm}
-        />
-      </div>
+        <nav className="sidebar-nav" aria-label="Main navigation">
+          <button className="nav-item active" onClick={() => setShowAddForm(false)}>
+            <span className="nav-icon" aria-hidden="true">▦</span>
+            Projects
+          </button>
+          <button className="nav-item" onClick={openAddForm}>
+            <span className="nav-icon" aria-hidden="true">＋</span>
+            Add project
+          </button>
+        </nav>
+
+        <div className="sidebar-footer">
+          <span className="status-dot" aria-hidden="true"></span>
+          Data saved locally
+        </div>
+      </aside>
+
+      <main className="main-content">
+        <ClientsList showAddForm={showAddForm} onShowAddForm={setShowAddForm} />
+      </main>
     </div>
-  );
+  )
 }
 
 export default App

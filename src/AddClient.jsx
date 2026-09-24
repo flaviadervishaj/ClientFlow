@@ -54,7 +54,7 @@ function AddClient({ onAddClient, onCancel }) {
 
       <form onSubmit={handleSubmit} className="add-client-form">
         <div className="form-group">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">Client name</label>
           <input
             type="text"
             id="name"
@@ -87,7 +87,7 @@ function AddClient({ onAddClient, onCancel }) {
             name="projectType"
             value={formData.projectType}
             onChange={handleChange}
-            placeholder="e.g., Web per Dyqan, Web per Filma"
+            placeholder="e.g. E-commerce website"
           />
         </div>
 
@@ -109,18 +109,8 @@ function AddClient({ onAddClient, onCancel }) {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            rows="3"
+            rows="4"
             placeholder="Enter a brief description of the project (2-3 sentences)..."
-            style={{ 
-              width: '100%', 
-              padding: '0.75rem 1rem', 
-              border: '1px solid #ced4da', 
-              borderRadius: '6px',
-              fontFamily: 'inherit',
-              fontSize: '1rem',
-              resize: 'vertical',
-              boxSizing: 'border-box'
-            }}
           />
         </div>
 
@@ -153,4 +143,3 @@ function AddClient({ onAddClient, onCancel }) {
 }
 
 export default AddClient
-
