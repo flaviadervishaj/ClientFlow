@@ -10,6 +10,7 @@ function EditClient({ client, onEditClient, onCancel }) {
     status: client.status,
     description: client.description || ''
   })
+  const [submitting, setSubmitting] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -23,7 +24,7 @@ function EditClient({ client, onEditClient, onCancel }) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     
     if (!isValidEmail(formData.email)) {
@@ -41,7 +42,9 @@ function EditClient({ client, onEditClient, onCancel }) {
       description: formData.description
     }
     
-    onEditClient(updatedClient)
+    setSubmitting(true)
+    await onEditClient(updatedClient)
+    setSubmitting(false)
   }
 
   return (
@@ -63,6 +66,7 @@ function EditClient({ client, onEditClient, onCancel }) {
             value={formData.name}
             onChange={handleChange}
             required
+            maxLength="120"
             placeholder="Enter client name"
           />
         </div>
@@ -76,6 +80,7 @@ function EditClient({ client, onEditClient, onCancel }) {
             value={formData.email}
             onChange={handleChange}
             required
+            maxLength="254"
             placeholder="Enter client email"
           />
         </div>
@@ -88,6 +93,7 @@ function EditClient({ client, onEditClient, onCancel }) {
             name="projectType"
             value={formData.projectType}
             onChange={handleChange}
+            maxLength="160"
             placeholder="e.g. E-commerce website"
           />
         </div>
@@ -111,6 +117,7 @@ function EditClient({ client, onEditClient, onCancel }) {
             value={formData.description}
             onChange={handleChange}
             rows="4"
+            maxLength="2000"
             placeholder="Enter a brief description of the project (2-3 sentences)..."
           />
         </div>
@@ -131,8 +138,8 @@ function EditClient({ client, onEditClient, onCancel }) {
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="submit-button">
-            Save Changes
+          <button type="submit" className="submit-button" disabled={submitting}>
+            {submitting ? 'Saving…' : 'Save Changes'}
           </button>
           <button type="button" onClick={onCancel} className="cancel-button-form">
             Cancel

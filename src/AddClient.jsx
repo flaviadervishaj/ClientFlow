@@ -10,6 +10,7 @@ function AddClient({ onAddClient, onCancel }) {
     status: 'To Do',
     description: ''
   })
+  const [submitting, setSubmitting] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -23,7 +24,7 @@ function AddClient({ onAddClient, onCancel }) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     
     if (!isValidEmail(formData.email)) {
@@ -31,7 +32,11 @@ function AddClient({ onAddClient, onCancel }) {
       return
     }
     
-    onAddClient(formData)
+    setSubmitting(true)
+    const saved = await onAddClient(formData)
+    setSubmitting(false)
+
+    if (!saved) return
     
     setFormData({
       name: '',
@@ -62,6 +67,7 @@ function AddClient({ onAddClient, onCancel }) {
             value={formData.name}
             onChange={handleChange}
             required
+            maxLength="120"
             placeholder="Enter client name"
           />
         </div>
@@ -75,6 +81,7 @@ function AddClient({ onAddClient, onCancel }) {
             value={formData.email}
             onChange={handleChange}
             required
+            maxLength="254"
             placeholder="Enter client email"
           />
         </div>
@@ -87,6 +94,7 @@ function AddClient({ onAddClient, onCancel }) {
             name="projectType"
             value={formData.projectType}
             onChange={handleChange}
+            maxLength="160"
             placeholder="e.g. E-commerce website"
           />
         </div>
@@ -110,6 +118,7 @@ function AddClient({ onAddClient, onCancel }) {
             value={formData.description}
             onChange={handleChange}
             rows="4"
+            maxLength="2000"
             placeholder="Enter a brief description of the project (2-3 sentences)..."
           />
         </div>
@@ -130,8 +139,8 @@ function AddClient({ onAddClient, onCancel }) {
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="submit-button">
-            Add Project
+          <button type="submit" className="submit-button" disabled={submitting}>
+            {submitting ? 'Saving…' : 'Add Project'}
           </button>
           <button type="button" onClick={onCancel} className="cancel-button-form">
             Cancel

@@ -1,0 +1,21 @@
+.settings-page { width: min(980px, 100%); margin: 0 auto; }
+.settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.settings-card { display: flex; min-height: 260px; flex-direction: column; justify-content: space-between; padding: 26px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 8px 28px rgba(24, 39, 75, 0.05); }
+.settings-kicker { color: #2563eb; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.13em; }
+.settings-card h2 { margin: 8px 0 7px; color: #172033; font-size: 1.15rem; }
+.settings-card p { margin: 0; color: #7b879a; font-size: 0.8rem; line-height: 1.6; }
+.account-row { display: flex; align-items: center; gap: 12px; padding-top: 24px; border-top: 1px solid #edf1f6; }
+.account-avatar { display: grid; width: 42px; height: 42px; place-items: center; color: #1d4ed8; background: #eaf1ff; border-radius: 11px; font-weight: 800; }
+.account-row > span:last-child { display: flex; min-width: 0; flex-direction: column; gap: 3px; }
+.account-row strong { overflow: hidden; color: #2b3648; font-size: 0.78rem; text-overflow: ellipsis; white-space: nowrap; }
+.account-row small { color: #96a1b2; font-size: 0.68rem; }
+.settings-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 24px; }
+.settings-primary, .settings-secondary { padding: 10px 13px; border-radius: 8px; cursor: pointer; font-size: 0.74rem; font-weight: 800; }
+.settings-primary { color: #fff; background: #2563eb; border: 1px solid #2563eb; }
+.settings-secondary { color: #43516a; background: #fff; border: 1px solid #dbe3ee; }
+.settings-status { margin-top: 12px !important; color: #41639b !important; }
+
+@media (max-width: 720px) {
+  .settings-grid { grid-template-columns: 1fr; }
+  .settings-card { min-height: 230px; padding: 21px; }
+}

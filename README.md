@@ -1,15 +1,16 @@
 # ClientFlow
 
-ClientFlow is a responsive React dashboard for keeping track of client projects, deadlines and progress. It is designed as a lightweight front-end application and stores data in the browser, so it works without a separate backend.
+ClientFlow is a responsive client project dashboard with secure account access and cloud data persistence.
 
 ## Features
 
 - Add, edit, view and delete client projects
 - Search by client, email or project type
 - Track project status and deadlines
-- Import and export project data as JSON
+- Email and password authentication
+- Private, account-based project data
+- Import and export project backups from Settings
 - Responsive layout for desktop and mobile
-- Local storage persistence
 
 ## Built with
 
@@ -17,6 +18,7 @@ ClientFlow is a responsive React dashboard for keeping track of client projects,
 - JavaScript
 - CSS
 - Vite
+- Firebase Authentication and Cloud Firestore
 
 ## Live demo
 
@@ -26,5 +28,10 @@ ClientFlow is a responsive React dashboard for keeping track of client projects,
 
 ```bash
 npm install
+```
+
+Create a `.env` file from `.env.example` and add your Firebase web app configuration before starting the app.
+
+```bash
 npm run dev
 ```

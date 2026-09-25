@@ -22,6 +22,7 @@
 .stat-done::before { background: #10b981; }
 
 .projects-panel { overflow: hidden; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 8px 28px rgba(24, 39, 75, 0.055); }
+.projects-error { margin: -10px 0 20px; padding: 10px 13px; color: #9f2638; background: #fff0f2; border: 1px solid #ffd5dc; border-radius: 9px; font-size: 0.76rem; }
 .panel-header { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 21px 24px 16px; }
 .panel-header h2 { margin: 0; color: #172033; font-size: 1.05rem; }
 .panel-header p { margin: 4px 0 0; color: #8490a4; font-size: 0.76rem; }
