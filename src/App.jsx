@@ -3,7 +3,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth'
 import Auth, { VerifyEmail } from './Auth'
 import ClientsList from './ClientsList'
 import Settings from './Settings'
-import { auth, isFirebaseConfigured } from './lib/firebase'
+import { auth } from './lib/firebase'
 import { getProjects, replaceProjects } from './lib/projects'
 import './App.css'
 
@@ -12,13 +12,11 @@ function App() {
   const [showAddForm, setShowAddForm] = useState(false)
   const [activeView, setActiveView] = useState('projects')
   const [user, setUser] = useState(null)
-  const [authLoading, setAuthLoading] = useState(Boolean(auth))
+  const [authLoading, setAuthLoading] = useState(true)
   const [clients, setClients] = useState([])
   const [workspaceError, setWorkspaceError] = useState('')
 
   useEffect(() => {
-    if (!auth) return undefined
-
     return onAuthStateChanged(auth, (nextUser) => {
       setUser(nextUser)
       if (!nextUser) {
@@ -60,10 +58,6 @@ function App() {
     setActiveView(view)
     setShowAddForm(false)
     setSidebarOpen(false)
-  }
-
-  if (!isFirebaseConfigured) {
-    return <main className="configuration-page"><div><span className="brand-mark">CF</span><h1>ClientFlow is being configured</h1><p>The secure workspace connection is not available yet.</p></div></main>
   }
 
   if (authLoading) {

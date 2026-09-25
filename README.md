@@ -30,8 +30,6 @@ ClientFlow is a responsive client project dashboard with secure account access a
 npm install
 ```
 
-Create a `.env` file from `.env.example` and add your Firebase web app configuration before starting the app.
-
 ```bash
 npm run dev
 ```
