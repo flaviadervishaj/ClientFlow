@@ -19,12 +19,14 @@ const AUTH_MESSAGES = {
   'auth/network-request-failed': 'Check your internet connection and try again.',
   'auth/operation-not-allowed': 'Account registration is not available right now.',
   'auth/too-many-requests': 'Too many attempts. Please wait a moment and try again.',
+  'auth/quota-exceeded': 'The email sending limit has been reached. Please try again later.',
+  'auth/unauthorized-domain': 'This site is not authorized to send account emails.',
   'auth/weak-password': 'Choose a password with at least 8 characters.',
 }
 
 const getAuthMessage = (error) => AUTH_MESSAGES[error.code] || 'We could not complete that request. Please try again.'
 
-function Auth() {
+function Auth({ onVerificationNotice }) {
   const [mode, setMode] = useState('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -47,9 +49,12 @@ function Auth() {
     try {
       if (mode === 'signup') {
         const credential = await createUserWithEmailAndPassword(auth, email, password)
-        await sendEmailVerification(credential.user)
-        await signOut(auth)
-        setMessage('Check your email to confirm your account, then sign in.')
+        try {
+          await sendEmailVerification(credential.user)
+          onVerificationNotice({ type: 'success', text: 'Confirmation email sent. Check your inbox and spam folder.' })
+        } catch (emailError) {
+          onVerificationNotice({ type: 'error', text: `Your account was created, but the email could not be sent. ${getAuthMessage(emailError)} Use the resend button below.` })
+        }
       } else {
         await signInWithEmailAndPassword(auth, email, password)
       }
@@ -135,7 +140,7 @@ function Auth() {
   )
 }
 
-export function VerifyEmail({ user, onVerified }) {
+export function VerifyEmail({ user, onVerified, initialNotice, onNoticeChange }) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
@@ -162,9 +167,11 @@ export function VerifyEmail({ user, onVerified }) {
     setError('')
     try {
       await sendEmailVerification(user)
-      setMessage('A new confirmation email has been sent.')
+      setMessage('Confirmation email sent. Check your inbox and spam folder.')
+      onNoticeChange(null)
     } catch (authError) {
       setError(getAuthMessage(authError))
+      onNoticeChange(null)
     } finally {
       setLoading(false)
     }
@@ -177,8 +184,9 @@ export function VerifyEmail({ user, onVerified }) {
           <div className="auth-card-heading">
             <span className="auth-mobile-logo recovery-logo">CF</span>
             <h2>Confirm your email</h2>
-            <p>We sent a confirmation link to <strong>{user.email}</strong>. Open it before continuing to your workspace.</p>
+            <p>Confirm <strong>{user.email}</strong> to access your workspace. If you haven't received an email, use the resend button below.</p>
           </div>
+          {initialNotice ? <p className={`auth-notice ${initialNotice.type}`} role={initialNotice.type === 'error' ? 'alert' : 'status'}>{initialNotice.text}</p> : null}
           {error ? <p className="auth-notice error" role="alert">{error}</p> : null}
           {message ? <p className="auth-notice success" role="status">{message}</p> : null}
           <div className="verification-actions">

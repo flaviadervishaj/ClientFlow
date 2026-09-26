@@ -15,6 +15,7 @@ function App() {
   const [authLoading, setAuthLoading] = useState(true)
   const [clients, setClients] = useState([])
   const [workspaceError, setWorkspaceError] = useState('')
+  const [verificationNotice, setVerificationNotice] = useState(null)
 
   useEffect(() => {
     return onAuthStateChanged(auth, (nextUser) => {
@@ -22,6 +23,7 @@ function App() {
       if (!nextUser) {
         setClients([])
         setWorkspaceError('')
+        setVerificationNotice(null)
       }
       setAuthLoading(false)
     })
@@ -64,9 +66,9 @@ function App() {
     return <main className="app-loading"><span className="brand-mark">CF</span><p>Loading workspace…</p></main>
   }
 
-  if (!user) return <Auth />
+  if (!user) return <Auth onVerificationNotice={setVerificationNotice} />
 
-  if (!user.emailVerified) return <VerifyEmail user={user} onVerified={setUser} />
+  if (!user.emailVerified) return <VerifyEmail user={user} onVerified={setUser} initialNotice={verificationNotice} onNoticeChange={setVerificationNotice} />
 
   const email = user.email || 'Account'
 
