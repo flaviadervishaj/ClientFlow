@@ -1,75 +1,141 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
+import Auth from './Auth'
 import ClientsList from './ClientsList'
+import Settings from './Settings'
+import { auth } from './lib/firebase'
+import { getProjects, replaceProjects } from './lib/projects'
 import './App.css'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showAddForm, setShowAddForm] = useState(false)
+  const [activeView, setActiveView] = useState('projects')
+  const [user, setUser] = useState(null)
+  const [authLoading, setAuthLoading] = useState(true)
+  const [clients, setClients] = useState([])
+  const [workspaceError, setWorkspaceError] = useState('')
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen)
-  }
+  useEffect(() => {
+    return onAuthStateChanged(auth, (nextUser) => {
+      setUser(nextUser)
+      if (!nextUser) {
+        setClients([])
+        setWorkspaceError('')
+      }
+      setAuthLoading(false)
+    })
+  }, [])
 
-  const closeSidebar = () => {
+  useEffect(() => {
+    if (!user) return
+
+    let active = true
+    getProjects(user.uid)
+      .then((projects) => {
+        if (!active) return
+        setClients(projects)
+        setWorkspaceError('')
+      })
+      .catch(() => {
+        if (!active) return
+        setClients([])
+        setWorkspaceError('Your projects could not be loaded. Please refresh and try again.')
+      })
+
+    return () => {
+      active = false
+    }
+  }, [user])
+
+  const openAddForm = () => {
+    setActiveView('projects')
+    setShowAddForm(true)
     setSidebarOpen(false)
   }
 
-  const handleAddClientClick = () => {
-    setShowAddForm(true)
-    if (window.innerWidth <= 768) {
-      setSidebarOpen(false)
-    }
+  const showView = (view) => {
+    setActiveView(view)
+    setShowAddForm(false)
+    setSidebarOpen(false)
   }
 
+  if (authLoading) {
+    return <main className="app-loading"><span className="brand-mark">CF</span><p>Loading workspace…</p></main>
+  }
+
+  if (!user) return <Auth />
+
+  const email = user.email || 'Account'
+
   return (
-    <div className="app-container">
-      <button 
-        className="hamburger-button"
-        onClick={toggleSidebar}
-        aria-label="Toggle menu"
-      >
-        <span className="hamburger-icon"></span>
-        <span className="hamburger-icon"></span>
-        <span className="hamburger-icon"></span>
-      </button>
+    <div className="app-shell">
+      <header className="mobile-header">
+        <div className="mobile-header-brand"><span className="brand-mark">CF</span><strong>ClientFlow</strong></div>
+        <button
+          className="mobile-menu-button"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open navigation"
+          aria-expanded={sidebarOpen}
+          aria-controls="app-sidebar"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </header>
 
-      {sidebarOpen && (
-        <div 
-          className="sidebar-overlay" 
-          onClick={closeSidebar}
-        ></div>
-      )}
+      {sidebarOpen ? <button className="sidebar-overlay" onClick={() => setSidebarOpen(false)} aria-label="Close navigation" /> : null}
 
-      <div className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
-        <div className="sidebar-header">
-          <div className="logo-container">
-            <div className="logo-icon">CF</div>
-            <h2 className="logo-text">ClientFlow</h2>
-          </div>
+      <aside id="app-sidebar" className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
+        <div className="brand">
+          <span className="brand-mark">CF</span>
+          <span><strong>ClientFlow</strong><small>Project workspace</small></span>
         </div>
-        <ul className="sidebar-menu">
-          <li className="sidebar-menu-item active">
-            <span className="menu-icon">📋</span>
-            <span>Projects</span>
-          </li>
-          <li 
-            className="sidebar-menu-item"
-            onClick={handleAddClientClick}
-          >
-            <span className="menu-icon">➕</span>
-            <span>Add Project</span>
-          </li>
-        </ul>
-      </div>
+        <button className="sidebar-close-button" type="button" onClick={() => setSidebarOpen(false)} aria-label="Close navigation">×</button>
 
-      <div className="main-content">
-        <ClientsList 
-          showAddForm={showAddForm}
-          onShowAddForm={setShowAddForm}
-        />
-      </div>
+        <nav className="sidebar-nav" aria-label="Main navigation">
+          <button className={`nav-item ${activeView === 'projects' ? 'active' : ''}`} onClick={() => showView('projects')}>
+            <span className="nav-icon" aria-hidden="true">▦</span>
+            Projects
+          </button>
+          <button className="nav-item" onClick={openAddForm}>
+            <span className="nav-icon" aria-hidden="true">＋</span>
+            Add project
+          </button>
+          <button className={`nav-item ${activeView === 'settings' ? 'active' : ''}`} onClick={() => showView('settings')}>
+            <span className="nav-icon" aria-hidden="true">⚙</span>
+            Settings
+          </button>
+        </nav>
+
+        <div className="sidebar-footer">
+          <div className="sidebar-account"><span>{email.charAt(0).toUpperCase()}</span><div><strong>{email}</strong><small>Secure workspace</small></div></div>
+          <button onClick={() => signOut(auth)}>Sign out</button>
+        </div>
+      </aside>
+
+      <main className="main-content">
+        {activeView === 'settings' ? (
+          <Settings
+            clients={clients}
+            email={email}
+            onImport={async (projects) => {
+              const imported = await replaceProjects(projects, user.uid, clients.map((project) => project.id))
+              setClients(imported)
+            }}
+          />
+        ) : (
+          <ClientsList
+            clients={clients}
+            setClients={setClients}
+            userId={user.uid}
+            loadError={workspaceError}
+            showAddForm={showAddForm}
+            onShowAddForm={setShowAddForm}
+          />
+        )}
+      </main>
     </div>
-  );
+  )
 }
 
 export default App

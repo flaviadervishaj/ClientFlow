@@ -7,7 +7,7 @@ function ClientDetails({ client, onClose, onEdit, onDelete }) {
       const date = new Date(dateString + 'T00:00:00')
       const options = { year: 'numeric', month: 'long', day: 'numeric' }
       return date.toLocaleDateString('en-US', options)
-    } catch (error) {
+    } catch {
       return dateString
     }
   }
@@ -78,4 +78,3 @@ function ClientDetails({ client, onClose, onEdit, onDelete }) {
 }
 
 export default ClientDetails
-

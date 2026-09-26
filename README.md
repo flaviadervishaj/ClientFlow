@@ -1,16 +1,37 @@
-# React + Vite
+# ClientFlow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ClientFlow is a responsive workspace for managing client projects, deadlines and progress. Each account has its own project data, stored in Cloud Firestore.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Create, edit, search and delete client projects
+- Track deadlines and project status
+- Sign in with email and password through Firebase Authentication
+- Keep projects separate by account with Firestore security rules
+- Download a JSON backup and restore it from Settings
+- Use the dashboard on desktop and mobile
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React, JavaScript, CSS, Vite, Firebase Authentication and Cloud Firestore.
 
-## Expanding the ESLint configuration
+## Preview
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+[Open the current ClientFlow preview](https://client-flow-git-cv-polish-clientflow-flavia-s-projects-f5e3ebc2.vercel.app/). The [existing production site](https://client-flow-ten.vercel.app/) is on an earlier version until this branch is merged.
+
+## Local development
+
+Requires Node.js and npm. From the project directory:
+
+```bash
+npm ci
+npm run dev
+```
+
+Run `npm run lint` and `npm run build` before submitting changes.
+
+The Firebase web configuration is in `src/lib/firebase.js`. To use your own Firebase project, replace that public configuration, enable Email/Password sign-in and Cloud Firestore, and deploy the rules in `firestore.rules`. The web configuration identifies the project; the Firestore rules restrict project data to the signed-in account.
+
+## Data and backups
+
+Projects are stored under `users/{uid}/projects`. A backup contains project fields in JSON format and excludes account credentials. Restoring a backup replaces the projects in the current account after confirmation; download a copy of existing projects first if you want to keep them.

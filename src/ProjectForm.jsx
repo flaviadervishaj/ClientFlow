@@ -1,60 +1,60 @@
 import { useState } from 'react'
-import './AddClient.css'
+import './ProjectForm.css'
 
-function AddClient({ onAddClient, onCancel }) {
+function ProjectForm({ project, onSave, onCancel }) {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    projectType: '',
-    deadline: '',
-    status: 'To Do',
-    description: ''
+    name: project?.name || '',
+    email: project?.email || '',
+    projectType: project?.projectType || '',
+    deadline: project?.deadline || '',
+    status: project?.status || 'To Do',
+    description: project?.description || '',
   })
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value
-    })
+    setFormData((current) => ({ ...current, [name]: value }))
+    setError('')
   }
 
   const isValidEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     
-    if (!isValidEmail(formData.email)) {
-      alert('Please enter a valid email address')
+    if (!isValidEmail(formData.email.trim())) {
+      setError('Please enter a valid email address.')
       return
     }
-    
-    onAddClient(formData)
-    
-    setFormData({
-      name: '',
-      email: '',
-      projectType: '',
-      deadline: '',
-      status: 'To Do',
-      description: ''
-    })
+
+    setSubmitting(true)
+    try {
+      const saved = await onSave({ ...formData, ...(project ? { id: project.id } : {}) })
+      if (!saved) setError('The project could not be saved. Please try again.')
+    } catch {
+      setError('The project could not be saved. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
     <div className="add-client-container">
       <div className="add-client-header">
-        <h2>Add New Project</h2>
-        <button onClick={onCancel} className="cancel-button">
+        <h2>{project ? 'Edit Project' : 'Add New Project'}</h2>
+        <button type="button" onClick={onCancel} className="cancel-button">
           × Close
         </button>
       </div>
 
       <form onSubmit={handleSubmit} className="add-client-form">
+        {error ? <p className="form-error" role="alert">{error}</p> : null}
         <div className="form-group">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">Client name</label>
           <input
             type="text"
             id="name"
@@ -62,12 +62,13 @@ function AddClient({ onAddClient, onCancel }) {
             value={formData.name}
             onChange={handleChange}
             required
+            maxLength="120"
             placeholder="Enter client name"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
@@ -75,24 +76,26 @@ function AddClient({ onAddClient, onCancel }) {
             value={formData.email}
             onChange={handleChange}
             required
+            maxLength="254"
             placeholder="Enter client email"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="projectType">Project Type:</label>
+          <label htmlFor="projectType">Project type</label>
           <input
             type="text"
             id="projectType"
             name="projectType"
             value={formData.projectType}
             onChange={handleChange}
-            placeholder="e.g., Web per Dyqan, Web per Filma"
+            maxLength="160"
+            placeholder="e.g. E-commerce website"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="deadline">Deadline:</label>
+          <label htmlFor="deadline">Deadline</label>
           <input
             type="date"
             id="deadline"
@@ -103,29 +106,20 @@ function AddClient({ onAddClient, onCancel }) {
         </div>
 
         <div className="form-group">
-          <label htmlFor="description">Project Description:</label>
+          <label htmlFor="description">Project description</label>
           <textarea
             id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
-            rows="3"
+            rows="4"
+            maxLength="2000"
             placeholder="Enter a brief description of the project (2-3 sentences)..."
-            style={{ 
-              width: '100%', 
-              padding: '0.75rem 1rem', 
-              border: '1px solid #ced4da', 
-              borderRadius: '6px',
-              fontFamily: 'inherit',
-              fontSize: '1rem',
-              resize: 'vertical',
-              boxSizing: 'border-box'
-            }}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="status">Status:</label>
+          <label htmlFor="status">Status</label>
           <select
             id="status"
             name="status"
@@ -140,8 +134,8 @@ function AddClient({ onAddClient, onCancel }) {
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="submit-button">
-            Add Project
+          <button type="submit" className="submit-button" disabled={submitting}>
+            {submitting ? 'Saving…' : project ? 'Save Changes' : 'Add Project'}
           </button>
           <button type="button" onClick={onCancel} className="cancel-button-form">
             Cancel
@@ -152,5 +146,4 @@ function AddClient({ onAddClient, onCancel }) {
   )
 }
 
-export default AddClient
-
+export default ProjectForm
