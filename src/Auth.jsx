@@ -11,9 +11,13 @@ import { auth } from './lib/firebase'
 import './Auth.css'
 
 const AUTH_MESSAGES = {
+  'auth/api-key-not-valid': 'The account service is temporarily unavailable. Please try again later.',
+  'auth/configuration-not-found': 'The account service is not configured correctly.',
   'auth/email-already-in-use': 'An account already exists for this email address.',
   'auth/invalid-credential': 'The email or password is incorrect.',
   'auth/invalid-email': 'Enter a valid email address.',
+  'auth/network-request-failed': 'Check your internet connection and try again.',
+  'auth/operation-not-allowed': 'Account registration is not available right now.',
   'auth/too-many-requests': 'Too many attempts. Please wait a moment and try again.',
   'auth/weak-password': 'Choose a password with at least 8 characters.',
 }

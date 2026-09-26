@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAPOYlrhw4WwyglIlmIs59AyF5GVTySzSI',
+  apiKey: 'AIzaSyA0SyPcg9v67Afbdt9dk1hoMFyLyGV8rfI',
   authDomain: 'clientflow-8b6a5.firebaseapp.com',
   projectId: 'clientflow-8b6a5',
   storageBucket: 'clientflow-8b6a5.firebasestorage.app',
