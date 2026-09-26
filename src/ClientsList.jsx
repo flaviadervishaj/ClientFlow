@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import ClientDetails from './ClientDetails'
-import AddClient from './AddClient'
-import EditClient from './EditClient'
+import ProjectForm from './ProjectForm'
 import { createProject, deleteProject, updateProject } from './lib/projects'
 import './ClientsList.css'
 
@@ -90,7 +89,7 @@ function ClientsList({ clients, setClients, userId, loadError, showAddForm: show
   if (showAddForm) {
     return (
       <div className="clients-container form-view">
-        <AddClient onAddClient={handleAddClient} onCancel={() => setShowAddForm(false)} />
+        <ProjectForm onSave={handleAddClient} onCancel={() => setShowAddForm(false)} />
       </div>
     )
   }
@@ -98,9 +97,10 @@ function ClientsList({ clients, setClients, userId, loadError, showAddForm: show
   if (showEditForm && clientToEdit) {
     return (
       <div className="clients-container form-view">
-        <EditClient
-          client={clientToEdit}
-          onEditClient={handleEditClient}
+        <ProjectForm
+          key={clientToEdit.id}
+          project={clientToEdit}
+          onSave={handleEditClient}
           onCancel={() => {
             setShowEditForm(false)
             setClientToEdit(null)

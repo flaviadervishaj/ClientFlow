@@ -2,14 +2,25 @@ import { useRef, useState } from 'react'
 import './Settings.css'
 
 const VALID_STATUSES = ['To Do', 'In Progress', 'Done']
+const MAX_BATCH_OPERATIONS = 450
+
+const optionalString = (value, maxLength) => (
+  value === undefined || (typeof value === 'string' && value.length <= maxLength)
+)
 
 const isValidProject = (project) => (
   project &&
-  typeof project === 'object' &&
+  typeof project === 'object' && !Array.isArray(project) &&
   typeof project.name === 'string' &&
-  project.name.trim().length > 0 &&
+  project.name.trim().length > 0 && project.name.trim().length <= 120 &&
   typeof project.email === 'string' &&
-  project.email.trim().length > 0
+  project.email.trim().length <= 254 &&
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(project.email.trim()) &&
+  optionalString(project.projectType, 160) &&
+  optionalString(project.deadline, 10) &&
+  (!project.deadline || /^\d{4}-\d{2}-\d{2}$/.test(project.deadline)) &&
+  optionalString(project.description, 2000) &&
+  (project.status === undefined || VALID_STATUSES.includes(project.status))
 )
 
 function Settings({ clients, email, onImport }) {
@@ -46,7 +57,7 @@ function Settings({ clients, email, onImport }) {
     try {
       const parsed = JSON.parse(await file.text())
       if (!Array.isArray(parsed) || !parsed.every(isValidProject)) throw new Error('Invalid project backup.')
-      if (parsed.length + clients.length > 450) throw new Error('Backup is too large.')
+      if (parsed.length + clients.length > MAX_BATCH_OPERATIONS) throw new Error('Backup is too large for one import.')
       if (!window.confirm(`Replace your current projects with ${parsed.length} imported projects?`)) return
 
       setLoading(true)
@@ -58,10 +69,15 @@ function Settings({ clients, email, onImport }) {
         status: VALID_STATUSES.includes(project.status) ? project.status : 'To Do',
         description: typeof project.description === 'string' ? project.description : '',
       }))
-      await onImport(normalized)
+      try {
+        await onImport(normalized)
+      } catch {
+        setStatus('The import could not be completed. Your projects were not replaced. Please try again.')
+        return
+      }
       setStatus(`${normalized.length} projects imported successfully.`)
-    } catch {
-      setStatus('This file is not a valid ClientFlow backup.')
+    } catch (error) {
+      setStatus(error.message === 'Backup is too large for one import.' ? error.message : 'This file is not a valid ClientFlow backup.')
     } finally {
       setLoading(false)
       event.target.value = ''

@@ -11,6 +11,7 @@
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus { background: #fff !important; border-color: #8ab0ff !important; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.09); }
 .form-group input::placeholder, .form-group textarea::placeholder { color: #9aa6b8; }
 .form-actions { display: flex; grid-column: 1 / -1; justify-content: flex-end; gap: 10px; padding-top: 6px; }
+.form-error { grid-column: 1 / -1; margin: 0; color: #b42318; font-size: 0.85rem; }
 .submit-button, .cancel-button-form { min-width: 126px; padding: 10px 15px; border: 0; border-radius: 9px; cursor: pointer; font-size: 0.8rem; font-weight: 800; }
 .submit-button { color: #fff; background: #2563eb; box-shadow: 0 6px 16px rgba(37, 99, 235, 0.18); }
 .submit-button:hover { background: #1d4ed8; }
