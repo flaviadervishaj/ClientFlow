@@ -70,22 +70,27 @@ function App() {
 
   return (
     <div className="app-shell">
-      <button
-        className="mobile-menu-button"
-        onClick={() => setSidebarOpen((isOpen) => !isOpen)}
-        aria-label="Toggle navigation"
-        aria-expanded={sidebarOpen}
-      >
-        <span></span><span></span><span></span>
-      </button>
+      <header className="mobile-header">
+        <div className="mobile-header-brand"><span className="brand-mark">CF</span><strong>ClientFlow</strong></div>
+        <button
+          className="mobile-menu-button"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open navigation"
+          aria-expanded={sidebarOpen}
+          aria-controls="app-sidebar"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </header>
 
       {sidebarOpen ? <button className="sidebar-overlay" onClick={() => setSidebarOpen(false)} aria-label="Close navigation" /> : null}
 
-      <aside className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
+      <aside id="app-sidebar" className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
         <div className="brand">
           <span className="brand-mark">CF</span>
           <span><strong>ClientFlow</strong><small>Project workspace</small></span>
         </div>
+        <button className="sidebar-close-button" type="button" onClick={() => setSidebarOpen(false)} aria-label="Close navigation">×</button>
 
         <nav className="sidebar-nav" aria-label="Main navigation">
           <button className={`nav-item ${activeView === 'projects' ? 'active' : ''}`} onClick={() => showView('projects')}>
