@@ -8,9 +8,9 @@
 
 * { box-sizing: border-box; }
 
-html { min-width: 320px; background: #f4f7fb; }
+html { min-width: 320px; overflow-x: clip; background: #f4f7fb; }
 
-body { margin: 0; min-width: 320px; min-height: 100vh; }
+body { margin: 0; min-width: 320px; min-height: 100vh; overflow-x: clip; }
 
 button, input, select, textarea { font: inherit; }
 

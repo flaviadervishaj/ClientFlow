@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import {
   createUserWithEmailAndPassword,
-  reload,
-  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
-  signOut,
 } from 'firebase/auth'
 import { auth } from './lib/firebase'
 import './Auth.css'
@@ -19,14 +16,12 @@ const AUTH_MESSAGES = {
   'auth/network-request-failed': 'Check your internet connection and try again.',
   'auth/operation-not-allowed': 'Account registration is not available right now.',
   'auth/too-many-requests': 'Too many attempts. Please wait a moment and try again.',
-  'auth/quota-exceeded': 'The email sending limit has been reached. Please try again later.',
-  'auth/unauthorized-domain': 'This site is not authorized to send account emails.',
   'auth/weak-password': 'Choose a password with at least 8 characters.',
 }
 
 const getAuthMessage = (error) => AUTH_MESSAGES[error.code] || 'We could not complete that request. Please try again.'
 
-function Auth({ onVerificationNotice }) {
+function Auth() {
   const [mode, setMode] = useState('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -48,13 +43,7 @@ function Auth({ onVerificationNotice }) {
 
     try {
       if (mode === 'signup') {
-        const credential = await createUserWithEmailAndPassword(auth, email, password)
-        try {
-          await sendEmailVerification(credential.user)
-          onVerificationNotice({ type: 'success', text: 'Confirmation email sent. Check your inbox and spam folder.' })
-        } catch (emailError) {
-          onVerificationNotice({ type: 'error', text: `Your account was created, but the email could not be sent. ${getAuthMessage(emailError)} Use the resend button below.` })
-        }
+        await createUserWithEmailAndPassword(auth, email, password)
       } else {
         await signInWithEmailAndPassword(auth, email, password)
       }
@@ -134,66 +123,6 @@ function Auth({ onVerificationNotice }) {
           </form>
 
           <p className="auth-terms">By continuing, you agree to use ClientFlow responsibly and keep your account details secure.</p>
-        </div>
-      </section>
-    </main>
-  )
-}
-
-export function VerifyEmail({ user, onVerified, initialNotice, onNoticeChange }) {
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
-
-  const checkVerification = async () => {
-    setLoading(true)
-    setError('')
-    try {
-      await reload(user)
-      if (user.emailVerified) {
-        onVerified({ uid: user.uid, email: user.email, emailVerified: true })
-      } else {
-        setError('Your email has not been confirmed yet.')
-      }
-    } catch {
-      setError('We could not check your email status. Please try again.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const resendVerification = async () => {
-    setLoading(true)
-    setError('')
-    try {
-      await sendEmailVerification(user)
-      setMessage('Confirmation email sent. Check your inbox and spam folder.')
-      onNoticeChange(null)
-    } catch (authError) {
-      setError(getAuthMessage(authError))
-      onNoticeChange(null)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <main className="auth-page recovery-page">
-      <section className="auth-panel">
-        <div className="auth-card verification-card">
-          <div className="auth-card-heading">
-            <span className="auth-mobile-logo recovery-logo">CF</span>
-            <h2>Confirm your email</h2>
-            <p>Confirm <strong>{user.email}</strong> to access your workspace. If you haven't received an email, use the resend button below.</p>
-          </div>
-          {initialNotice ? <p className={`auth-notice ${initialNotice.type}`} role={initialNotice.type === 'error' ? 'alert' : 'status'}>{initialNotice.text}</p> : null}
-          {error ? <p className="auth-notice error" role="alert">{error}</p> : null}
-          {message ? <p className="auth-notice success" role="status">{message}</p> : null}
-          <div className="verification-actions">
-            <button className="auth-submit" type="button" onClick={checkVerification} disabled={loading}>{loading ? 'Checking…' : 'I confirmed my email'}</button>
-            <button className="auth-link-button" type="button" onClick={resendVerification} disabled={loading}>Resend confirmation email</button>
-            <button className="auth-link-button muted" type="button" onClick={() => signOut(auth)}>Use another account</button>
-          </div>
         </div>
       </section>
     </main>

@@ -7,7 +7,7 @@ ClientFlow is a responsive client project dashboard with secure account access a
 - Add, edit, view and delete client projects
 - Search by client, email or project type
 - Track project status and deadlines
-- Email and password authentication
+- Email and password authentication without a confirmation step
 - Private, account-based project data
 - Import and export project backups from Settings
 - Responsive layout for desktop and mobile

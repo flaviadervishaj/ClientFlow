@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
-import Auth, { VerifyEmail } from './Auth'
+import Auth from './Auth'
 import ClientsList from './ClientsList'
 import Settings from './Settings'
 import { auth } from './lib/firebase'
@@ -15,7 +15,6 @@ function App() {
   const [authLoading, setAuthLoading] = useState(true)
   const [clients, setClients] = useState([])
   const [workspaceError, setWorkspaceError] = useState('')
-  const [verificationNotice, setVerificationNotice] = useState(null)
 
   useEffect(() => {
     return onAuthStateChanged(auth, (nextUser) => {
@@ -23,14 +22,13 @@ function App() {
       if (!nextUser) {
         setClients([])
         setWorkspaceError('')
-        setVerificationNotice(null)
       }
       setAuthLoading(false)
     })
   }, [])
 
   useEffect(() => {
-    if (!user?.emailVerified) return
+    if (!user) return
 
     let active = true
     getProjects(user.uid)
@@ -66,9 +64,7 @@ function App() {
     return <main className="app-loading"><span className="brand-mark">CF</span><p>Loading workspace…</p></main>
   }
 
-  if (!user) return <Auth onVerificationNotice={setVerificationNotice} />
-
-  if (!user.emailVerified) return <VerifyEmail user={user} onVerified={setUser} initialNotice={verificationNotice} onNoticeChange={setVerificationNotice} />
+  if (!user) return <Auth />
 
   const email = user.email || 'Account'
 
