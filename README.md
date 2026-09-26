@@ -15,9 +15,9 @@ ClientFlow is a responsive workspace for managing client projects, deadlines and
 
 React, JavaScript, CSS, Vite, Firebase Authentication and Cloud Firestore.
 
-## Preview
+## Live demo
 
-[Open the current ClientFlow preview](https://client-flow-git-cv-polish-clientflow-flavia-s-projects-f5e3ebc2.vercel.app/). The [existing production site](https://client-flow-ten.vercel.app/) is on an earlier version until this branch is merged.
+[Open ClientFlow](https://client-flow-ten.vercel.app/).
 
 ## Local development
 
